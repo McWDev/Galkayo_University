@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* Provisional GU brand tokens — see 03-UI-BRAND-GUIDE.md. Full design system lands in Task 002. */
+@theme {
+  --color-gu-green: #064b2f;
+  --color-gu-green-deep: #033b27;
+  --color-gu-gold: #e5bd00;
+  --color-gu-bg: #f8faf8;
+  --color-gu-text: #18231d;
+  --color-gu-muted: #5d6a62;
+  --color-gu-border: #dce4de;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--color-gu-bg);
+  color: var(--color-gu-text);
+}
