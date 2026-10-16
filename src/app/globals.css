@@ -1,21 +1,111 @@
 @import "tailwindcss";
 
-/* Provisional GU brand tokens — see 03-UI-BRAND-GUIDE.md. Full design system lands in Task 002. */
+/*
+ * Galkayo University design tokens — see docs/prd/03-UI-BRAND-GUIDE.md.
+ * Brand green/gold were sampled from the supplied logo (public/brand/gu.png);
+ * GU should confirm official values before launch.
+ *
+ * Contrast (WCAG 2.2): brand-800 on white 11.8:1, gold-400 on brand-800 8.7:1,
+ * muted on page 5.4:1, gold-ink on white 6.3:1. Gold is never used as text on light backgrounds.
+ */
 @theme {
-  --color-gu-green: #064b2f;
-  --color-gu-green-deep: #033b27;
-  --color-gu-gold: #e5bd00;
-  --color-gu-bg: #f8faf8;
-  --color-gu-text: #18231d;
-  --color-gu-muted: #5d6a62;
-  --color-gu-border: #dce4de;
+  /* Brand */
+  --color-brand-950: #021d13;
+  --color-brand-900: #032a1c;
+  --color-brand-800: #06402b; /* sampled logo green: primary */
+  --color-brand-700: #0b5a3c;
+  --color-brand-600: #12704b;
+  --color-brand-100: #e3efe8;
+  --color-brand-50: #f1f7f3;
+
+  --color-gold-400: #f7de1f; /* sampled logo gold: accents on green or decoration only */
+  --color-gold-300: #fae96b;
+  --color-gold-ink: #7a5c00; /* gold-family text on light backgrounds */
+
+  /* Neutrals */
+  --color-page: #f8faf8;
+  --color-surface: #ffffff;
+  --color-ink: #18231d;
+  --color-muted: #5d6a62;
+  --color-line: #dce4de;
+  --color-on-dark: #d9e6df;
+  --color-on-dark-muted: #a9c4b6;
+
+  /* Status */
+  --color-danger: #b42318;
+  --color-success: #0b5a3c;
+
+  /* Typography (variables set by next/font in the root layout) */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+
+  /* Shape and depth */
+  --radius-card: 0.75rem;
+  --shadow-card: 0 1px 2px rgb(3 42 28 / 0.06), 0 4px 16px rgb(3 42 28 / 0.06);
+  --shadow-pop: 0 12px 40px rgb(3 42 28 / 0.18);
 }
 
-html {
-  color-scheme: light;
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    color: var(--color-brand-900);
+    text-wrap: balance;
+  }
+
+  /* Visible, consistent keyboard focus everywhere */
+  :focus-visible {
+    outline: 3px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: var(--color-gold-400);
+  }
+
+  dialog::backdrop {
+    background: rgb(2 29 19 / 0.6);
+  }
+
+  /* Lock page scroll while a modal dialog (mobile menu) is open */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 }
 
-body {
-  background: var(--color-gu-bg);
-  color: var(--color-gu-text);
+@utility container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 80rem;
+  padding-inline: 1rem;
+  @media (width >= 40rem) {
+    padding-inline: 1.5rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 2rem;
+  }
 }

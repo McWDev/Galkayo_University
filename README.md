@@ -37,6 +37,7 @@ npm run dev                  # http://localhost:3000
 | `npm run lint` | ESLint (Next.js core-web-vitals + TypeScript rules) |
 | `npm run typecheck` | TypeScript type check |
 | `npm test` | Unit tests (Vitest) |
+| `npm run test:e2e` | End-to-end tests (Playwright, run after `npm run build`; first time: `npx playwright install chromium`) |
 | `npm run check` | Lint + typecheck + tests + build — run before every commit |
 
 ## Project structure
