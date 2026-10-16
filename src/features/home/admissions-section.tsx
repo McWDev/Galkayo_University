@@ -27,7 +27,7 @@ export function AdmissionsSection() {
         <SectionHeading id="admissions-title" eyebrow={admissions.eyebrow} title={admissions.title} intro={admissions.intro} />
 
         <div className="mt-14 grid gap-7 lg:grid-cols-[2fr_1fr]">
-          <ol className="grid gap-6 sm:grid-cols-2">
+          <ol className="grid min-w-0 gap-6 sm:grid-cols-2">
             {admissions.steps.map(({ title, text, href }, index) => {
               const Icon = stepIcons[index % stepIcons.length]!;
               return (
@@ -58,7 +58,7 @@ export function AdmissionsSection() {
             })}
           </ol>
 
-          <aside aria-labelledby="admissions-info-title" className="on-dark flex flex-col rounded-[var(--radius-card)] bg-brand-900 p-8 text-on-dark shadow-[var(--shadow-pop)]">
+          <aside aria-labelledby="admissions-info-title" className="on-dark flex min-w-0 flex-col rounded-[var(--radius-card)] bg-brand-900 p-6 text-on-dark sm:p-8 shadow-[var(--shadow-pop)]">
             <h3 id="admissions-info-title" className="text-2xl font-bold text-white">
               <T>{info.title}</T>
             </h3>
@@ -74,7 +74,7 @@ export function AdmissionsSection() {
                   </span>
                   <span className="min-w-0">
                     <span className="block text-xs text-on-dark-muted">{label}</span>
-                    <span className="block font-semibold break-words text-white">
+                    <span className="block font-semibold [overflow-wrap:anywhere] text-white">
                       {value && href ? (
                         <a href={href} className="hover:text-gold-400">
                           {value}

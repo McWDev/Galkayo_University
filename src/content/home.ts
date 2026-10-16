@@ -15,14 +15,16 @@
  *  This content moves into the CMS in Tasks 014–016.
  */
 
+import { facultyHref, faculties } from "./faculties";
+
 export type IconName = "users" | "faculties" | "years" | "campuses" | "alumni";
 
 export const homeContent = {
   hero: {
-    badge: "Est. [Year] · Galkayo, Somalia",
-    titleLine1: "Shaping a Brighter Future",
-    titleLine2: "Study with Galkayo University",
-    intro: "A university in Galkayo, Somalia, preparing the next generation of professionals, researchers and leaders since [Year].",
+    badge: "Est. 2010 · Galkayo, Somalia",
+    titleLine1: "Study with Galkayo University",
+    titleLine2: "One Step For Higher Education",
+    intro: "A university in Galkayo, Somalia, preparing the next generation of professionals, researchers and leaders since 2010.",
     primaryCta: { label: "Apply for [Year]", href: "/admissions/apply" },
     secondaryCta: { label: "Explore Programmes", href: "/academics/programmes" },
     /** Optional background photo, e.g. "/images/hero.jpg" (must be a GU photo you have permission to use). */
@@ -30,9 +32,9 @@ export const homeContent = {
   },
 
   stats: [
-    { value: "[Number]+", label: "Students Enrolled", icon: "users" },
-    { value: "[Number]", label: "Faculties", icon: "faculties" },
-    { value: "[Number]+", label: "Years of Excellence", icon: "years" },
+    { value: "1000+", label: "Students Enrolled", icon: "users" },
+    { value: "5", label: "Faculties", icon: "faculties" },
+    { value: "16+", label: "Years of Excellence", icon: "years" },
     { value: "[Number]", label: "Campuses in Galkayo", icon: "campuses" },
     { value: "[Number]+", label: "Alumni", icon: "alumni" },
   ] satisfies { value: string; label: string; icon: IconName }[],
@@ -40,11 +42,11 @@ export const homeContent = {
   about: {
     eyebrow: "Who We Are",
     title: "Welcome to Galkayo University",
-    foundedValue: "[Year]",
+    foundedValue: "2010",
     foundedLabel: "Founded",
     image: null as string | null,
     paragraphs: [
-      "Galkayo University (GU) is a [non-profit / private / public] higher education institution in Galkayo, Somalia. It was founded in [Year], beginning with [founding faculties or programmes] to train the [doctors, teachers, administrators, etc.] the region needed. Today the university operates [Number] campuses: [campus names].",
+      "Galkayo University (GU) is a [non-profit / private / public] higher education institution in Galkayo, Somalia. It was founded in 2010, beginning with [founding faculties or programmes] to train the [doctors, teachers, administrators, etc.] the region needed. Today the university operates [Number] campuses: [campus names].",
       "Since then, GU has grown steadily, building a supportive learning environment with facilities that include [classrooms, computer laboratories, a library, science laboratories]. A culture of teamwork and collaboration has shaped the university's academic and professional development.",
     ],
     objectivesTitle: "University Objectives",
@@ -57,7 +59,7 @@ export const homeContent = {
     highlights: [
       {
         title: "Years of GU History",
-        text: "Since its founding, Galkayo University has pursued excellence in teaching, research and innovation. Today it offers [Number] faculties and [Number] departments.",
+        text: "Since its founding, Galkayo University has pursued excellence in teaching, research and innovation. Today it offers 5 faculties and [Number] departments.",
       },
       {
         title: "Leading Academics in Various Fields",
@@ -72,16 +74,10 @@ export const homeContent = {
 
   faculties: {
     eyebrow: "Our Academics",
-    title: "[Number] Faculties",
+    title: "5 Faculties",
     intro: "Choose from faculties designed to equip you with the knowledge and skills Somalia and the world need most.",
-    /** One entry per faculty. Copy a block to add more. */
-    items: [1, 2, 3, 4, 5, 6].map((n) => ({
-      name: `Faculty of [Name ${n}]`,
-      established: "[Year]",
-      summary: "[Two sentences about this faculty: its focus, its departments, and the graduates it prepares.]",
-      href: "/academics/faculties",
-      image: null as string | null,
-    })),
+    /** Faculty names, years and summaries are edited in src/content/faculties.ts. */
+    items: faculties.map((f) => ({ ...f, href: facultyHref(f) })),
     cta: { label: "View All Faculties", href: "/academics/faculties" },
   },
 
@@ -90,10 +86,10 @@ export const homeContent = {
     title: "How to Apply",
     intro: "Joining Galkayo University is simple. Follow these four steps to start your academic journey with us.",
     steps: [
-      { title: "Browse Programmes", text: "Explore our [Number] faculties and find the programme that matches your interests and career goals.", href: "/academics/programmes" },
+      { title: "Browse Programmes", text: "Explore our 5 faculties and find the programme that matches your interests and career goals.", href: "/academics/programmes" },
       { title: "Check Requirements", text: "Review the admission requirements, tuition fees and available scholarships for your chosen programme.", href: "/admissions/requirements" },
       { title: "Submit Application", text: "Complete the application with your personal details, academic history and required documents.", href: "/admissions/apply" },
-      { title: "Await Decision", text: "The admissions team will review your application and contact you with a decision within [timeframe].", href: "/admissions/contact" },
+      { title: "Await Decision", text: "The admissions team will review your application and contact you with a decision within 24 hours.", href: "/admissions/contact" },
     ],
     info: {
       title: "Admissions Info",
@@ -101,7 +97,7 @@ export const homeContent = {
       /** Phone/email come from siteConfig.contact; add extra rows here. */
       extraContacts: [
         { label: "Alt. Phone", value: "[Alternative phone]", href: null as string | null },
-        { label: "Registrar", value: "[registrar email]", href: null as string | null },
+        { label: "Registrar", value: "registrar@galkayo.edu.so", href: "mailto:registrar@galkayo.edu.so" as string | null },
       ],
       scholarshipsTitle: "Scholarships Available",
       scholarshipsText: "Financial aid and merit-based scholarships are available for qualifying students. Ask our admissions team for details.",
@@ -135,7 +131,7 @@ export const homeContent = {
     intro: "Can't attend campus? Our ODL programme lets you earn a Galkayo University degree online. [Number] programmes are available across [Number] faculties.",
     stats: [
       { value: "[Number]", label: "Programmes" },
-      { value: "[Number]", label: "Faculties" },
+      { value: "5", label: "Faculties" },
       { value: "Online", label: "Delivery" },
       { value: "[Years]", label: "Policy Period" },
     ],
@@ -197,7 +193,7 @@ export const homeContent = {
 
   cta: {
     title: "Ready to Shape Your Future",
-    text: "Join [Number]+ students at Galkayo University and take the first step toward a career that makes a difference in Somalia and beyond.",
+    text: "Join 1000+ students at Galkayo University and take the first step toward a career that makes a difference in Somalia and beyond.",
     button: { label: "Apply Now", href: "/admissions/apply" },
   },
 };

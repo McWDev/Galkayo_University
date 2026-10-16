@@ -4,7 +4,7 @@
  * with HEMIS · Verify · Student Portal in a separate top bar above it (owner request).
  * Items become CMS-editable (navigation_items) in Task 014.
  *
- * GU-specific lists (faculties, partner universities, masters programmes) are empty until GU approves them;
+ * Faculties come from src/content/faculties.ts. Partner universities and masters programmes stay empty until GU supplies them;
  * empty groups are not rendered. External systems (HEMIS, student portal, certificate verification) link to
  * their real URL only when configured in `siteConfig.externalSystems`; otherwise to an internal page explaining
  * the service is not yet available online — never to a fake portal.
@@ -34,6 +34,7 @@ import {
   Users,
   type LucideIcon,
 } from "lucide-react";
+import { facultyHref, facultyShortName, faculties } from "@/content/faculties";
 import { siteConfig } from "./site";
 
 export type NavLink = {
@@ -54,7 +55,7 @@ export type NavItem =
 
 /** Approved GU data feeding the Academics mega menu (filled from the CMS once published). */
 const academicMenuData = {
-  faculties: [] as NavLink[],
+  faculties: faculties.map<NavLink>((f) => ({ label: facultyShortName(f), href: facultyHref(f) })),
   partnerUniversities: [] as NavLink[],
   mastersProgrammes: [] as NavLink[],
 };
@@ -101,14 +102,7 @@ export const mainNavigation: NavItem[] = [
           },
           {
             heading: "Faculties",
-            links: academicMenuData.faculties.length
-              ? academicMenuData.faculties
-              : [
-                  { label: "All Faculties", href: "/academics/faculties" },
-                  { label: "Departments", href: "/academics/departments" },
-                  { label: "Academic Programmes", href: "/academics/programmes" },
-                  { label: "Academic Calendar", href: "/academics/calendar" },
-                ],
+            links: [...academicMenuData.faculties, { label: "All Faculties", href: "/academics/faculties" }],
           },
         ],
       },
@@ -189,10 +183,7 @@ export const footerLinks: { heading: string; links: NavLink[] }[] = [
   {
     heading: "Academics",
     links: [
-      { label: "Faculties", href: "/academics/faculties" },
-      { label: "Academic Programmes", href: "/academics/programmes" },
-      { label: "Graduate School", href: "/graduate-school" },
-      { label: "Open & Distance Learning", href: "/odl" },
+      ...faculties.map<NavLink>((f) => ({ label: f.name, href: facultyHref(f) })),
       { label: "Academic Calendar", href: "/academics/calendar" },
       { label: "Our Library", href: "/library" },
     ],
