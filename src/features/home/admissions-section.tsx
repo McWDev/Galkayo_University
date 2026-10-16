@@ -61,16 +61,24 @@ export function AdmissionsSection() {
 
             <ul className="mt-7 space-y-5">
               {[
-                { icon: Phone, label: "Phone", value: contact.phone },
-                { icon: Mail, label: "Email", value: contact.email },
-              ].map(({ icon: Icon, label, value }) => (
+                { icon: Phone, label: "Phone", value: contact.phone, href: contact.phoneHref ? `tel:${contact.phoneHref}` : null },
+                { icon: Mail, label: "Email", value: contact.email, href: contact.email ? `mailto:${contact.email}` : null },
+              ].map(({ icon: Icon, label, value, href }) => (
                 <li key={label} className="flex items-center gap-4">
                   <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-white/10 text-gold-400">
                     <Icon aria-hidden="true" size={18} />
                   </span>
                   <span>
                     <span className="block text-xs text-on-dark-muted">{label}</span>
-                    <span className="block font-semibold text-white">{value ?? <span className="font-normal italic text-on-dark-muted">Pending approval</span>}</span>
+                    <span className="block font-semibold text-white">
+                      {value && href ? (
+                        <a href={href} className="hover:text-gold-400">
+                          {value}
+                        </a>
+                      ) : (
+                        <span className="font-normal italic text-on-dark-muted">Pending approval</span>
+                      )}
+                    </span>
                   </span>
                 </li>
               ))}

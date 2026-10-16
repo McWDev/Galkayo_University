@@ -20,7 +20,7 @@ export function Hero() {
         <Image src="/brand/gu.png" alt="" width={447} height={447} className="w-[26rem] grayscale invert" />
       </div>
 
-      <div className="container-page flex min-h-[calc(100svh-7.25rem)] flex-col justify-center py-20">
+      <div className="container-page flex min-h-[calc(100svh-9.75rem)] flex-col justify-center py-20">
         <div className="max-w-3xl">
           <p className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-4 py-1.5 text-sm font-semibold text-white">
             <GraduationCap aria-hidden="true" size={18} className="text-gold-400" />

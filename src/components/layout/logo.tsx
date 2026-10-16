@@ -10,12 +10,10 @@ type LogoProps = {
   /** Light text for dark backgrounds; the logo sits on a white disc so its green lettering stays legible. */
   inverted?: boolean;
   priority?: boolean;
-  /** Hide the wordmark where the full desktop menu needs the room (1280–1599px). */
-  compactOnDesktop?: boolean;
 };
 
 /** Official GU logo (public/brand/gu.png, supplied by GU). Never recolour, crop or stretch it. */
-export function Logo({ size = 52, withWordmark = true, inverted = false, priority = false, compactOnDesktop = false }: LogoProps) {
+export function Logo({ size = 52, withWordmark = true, inverted = false, priority = false }: LogoProps) {
   const image = (
     <Image
       src="/brand/gu.png"
@@ -33,12 +31,12 @@ export function Logo({ size = 52, withWordmark = true, inverted = false, priorit
     <Link
       href="/"
       className="inline-flex shrink-0 items-center gap-2.5"
-      aria-label={withWordmark && !compactOnDesktop ? undefined : `${siteConfig.name} home`}
+      aria-label={withWordmark ? undefined : `${siteConfig.name} home`}
     >
       {inverted ? <span className="rounded-full bg-white p-0.5 shadow-sm ring-2 ring-gold-400/70">{image}</span> : image}
       {withWordmark && (
-        <span className={`flex flex-col leading-none whitespace-nowrap ${compactOnDesktop ? "xl:hidden min-[100rem]:flex" : ""}`}>
-          <span className={`font-display text-[1.05rem] font-bold tracking-wide uppercase sm:text-lg ${inverted ? "text-white" : "text-brand-800"}`}>
+        <span className="flex flex-col leading-none whitespace-nowrap">
+          <span className={`font-display text-[0.9rem] font-bold tracking-wide uppercase min-[360px]:text-[1.05rem] sm:text-lg ${inverted ? "text-white" : "text-brand-800"}`}>
             {siteConfig.name}
           </span>
           <span lang="ar" dir="rtl" className={`mt-1 text-sm ${inverted ? "text-gold-400" : "text-muted"}`}>

@@ -20,11 +20,13 @@ export const siteConfig = {
     verifyCertificate: null as string | null,
   },
 
-  /** Approved contact details — all pending from GU. */
+  /** Approved contact details. Email and phone supplied by the site owner (2026-10-16); others pending from GU. */
   contact: {
     address: null as string | null,
-    phone: null as string | null,
-    email: null as string | null,
+    /** Display format; `phoneHref` is the dialable E.164 form used for tel: links. */
+    phone: "+252 61 538 6858" as string | null,
+    phoneHref: "+252615386858" as string | null,
+    email: "info@galkayo.edu.so" as string | null,
     officeHours: null as string | null,
   },
 } as const;

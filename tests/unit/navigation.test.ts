@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { footerLinks, isActivePath, isItemActive, linksOf, mainNavigation, primaryCta } from "@/config/navigation";
+import { footerLinks, isActivePath, isItemActive, linksOf, mainNavigation, primaryCta, topBarLinks } from "@/config/navigation";
 
 describe("isActivePath", () => {
   it("matches the exact route and its descendants", () => {
@@ -27,26 +27,25 @@ describe("navigation config", () => {
       "Research",
       "Policies",
       "Media",
-      "HEMIS",
-      "Student Portal",
-      "Verify",
       "Contact Us",
     ]);
   });
 
   it("uses root-relative internal hrefs, or https for configured external systems", () => {
-    const all = [...mainNavigation.flatMap(linksOf), ...footerLinks.flatMap((g) => g.links), primaryCta];
+    const all = [...mainNavigation.flatMap(linksOf), ...topBarLinks, ...footerLinks.flatMap((g) => g.links), primaryCta];
     for (const link of all) {
       if (link.external) expect(link.href, link.label).toMatch(/^https:\/\//);
       else expect(link.href, link.label).toMatch(/^\/[a-z0-9\-/]*$/);
     }
   });
 
+  it("puts HEMIS, Verify and Student Portal in the top bar, not the main menu", () => {
+    expect(topBarLinks.map((l) => l.label)).toEqual(["HEMIS", "Verify", "Student Portal"]);
+    expect(mainNavigation.map((i) => i.label)).not.toContain("HEMIS");
+  });
+
   it("never links unconfigured portals to an external site", () => {
-    for (const label of ["HEMIS", "Student Portal", "Verify"]) {
-      const item = mainNavigation.find((i) => i.label === label);
-      expect(item && linksOf(item)[0]?.external).toBeFalsy();
-    }
+    for (const link of topBarLinks) expect(link.external, link.label).toBeFalsy();
   });
 
   it("marks a menu active when the current page is inside it", () => {

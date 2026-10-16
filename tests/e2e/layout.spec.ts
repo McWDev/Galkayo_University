@@ -41,6 +41,30 @@ test.describe("shared layout", () => {
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(0);
   });
+
+  test("reflows without horizontal scrolling at 320px (WCAG 1.4.10)", async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 640 });
+    await page.goto("/");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
+});
+
+test.describe("top bar", () => {
+  test("shows HEMIS, Verify and Student Portal above the main menu, linking internally until configured", async ({ page }) => {
+    await page.goto("/");
+    const bar = page.getByRole("navigation", { name: "University systems" });
+    for (const name of ["HEMIS", "Verify", "Student Portal"]) {
+      const link = bar.getByRole("link", { name, exact: true });
+      await expect(link).toBeVisible();
+      expect(await link.getAttribute("href"), name).toMatch(/^\//);
+    }
+    await expect(page.getByRole("link", { name: "Email: info@galkayo.edu.so" }).first()).toHaveAttribute("href", "mailto:info@galkayo.edu.so");
+    await expect(page.getByRole("link", { name: "Phone: +252 61 538 6858" }).first()).toHaveAttribute("href", "tel:+252615386858");
+    const barBox = await bar.boundingBox();
+    const headerBox = await page.getByRole("banner").boundingBox();
+    expect(barBox!.y).toBeLessThan(headerBox!.y);
+  });
 });
 
 test.describe("desktop navigation", () => {
@@ -50,7 +74,7 @@ test.describe("desktop navigation", () => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Main" });
     const labels = await nav.locator(":scope > ul > li").evaluateAll((lis) => lis.map((li) => li.firstElementChild?.textContent?.trim()));
-    expect(labels).toEqual(["Home", "About", "Academics", "ODL", "Research", "Policies", "Media", "HEMIS", "Student Portal", "Verify", "Contact Us"]);
+    expect(labels).toEqual(["Home", "About", "Academics", "ODL", "Research", "Policies", "Media", "Contact Us"]);
   });
 
   test("menus open with keyboard, expose state, and close on Escape", async ({ page }) => {
@@ -98,14 +122,6 @@ test.describe("desktop navigation", () => {
     await expect(nav.getByRole("button", { name: "Research" })).toHaveAttribute("aria-expanded", "false");
   });
 
-  test("unconfigured portals link to internal pages, not external sites", async ({ page }) => {
-    await page.goto("/");
-    const nav = page.getByRole("navigation", { name: "Main" });
-    for (const name of ["HEMIS", "Student Portal", "Verify"]) {
-      const href = await nav.getByRole("link", { name, exact: true }).getAttribute("href");
-      expect(href, name).toMatch(/^\//);
-    }
-  });
 
   test("mobile menu button is hidden", async ({ page }) => {
     await page.goto("/");

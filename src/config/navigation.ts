@@ -1,6 +1,7 @@
 /**
  * Public navigation. Menu structure mirrors the owner's chosen reference (salaam.edu.so):
- * Home · About · Academics (mega menu) · ODL · Research · Policies · Media · HEMIS · Student Portal · Verify · Contact Us.
+ * Home · About · Academics (mega menu) · ODL · Research · Policies · Media · Contact Us,
+ * with HEMIS · Verify · Student Portal in a separate top bar above it (owner request).
  * Items become CMS-editable (navigation_items) in Task 014.
  *
  * GU-specific lists (faculties, partner universities, masters programmes) are empty until GU approves them;
@@ -9,8 +10,10 @@
  * the service is not yet available online — never to a fake portal.
  */
 import {
+  BadgeCheck,
   BookOpen,
   Building2,
+  Database,
   ClipboardList,
   FileCheck,
   FileText,
@@ -170,10 +173,14 @@ export const mainNavigation: NavItem[] = [
       { label: "Photos & Videos", href: "/media/gallery", icon: Images },
     ],
   },
-  { kind: "link", label: "HEMIS", ...externalOr(siteConfig.externalSystems.hemis, "/hemis") },
-  { kind: "link", label: "Student Portal", highlight: true, ...externalOr(siteConfig.externalSystems.studentPortal, "/student-portal") },
-  { kind: "link", label: "Verify", ...externalOr(siteConfig.externalSystems.verifyCertificate, "/verify-certificate") },
   { kind: "link", label: "Contact Us", href: "/contact" },
+];
+
+/** Top bar above the main menu: links to GU's external systems. */
+export const topBarLinks: NavLink[] = [
+  { label: "HEMIS", ...externalOr(siteConfig.externalSystems.hemis, "/hemis"), icon: Database },
+  { label: "Verify", ...externalOr(siteConfig.externalSystems.verifyCertificate, "/verify-certificate"), icon: BadgeCheck },
+  { label: "Student Portal", ...externalOr(siteConfig.externalSystems.studentPortal, "/student-portal"), icon: LayoutGrid },
 ];
 
 export const primaryCta: NavLink = { label: "Apply Now", href: "/admissions/apply" };

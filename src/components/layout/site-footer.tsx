@@ -6,13 +6,23 @@ import { siteConfig } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button-link";
 import { Logo } from "./logo";
 
-function ContactRow({ icon: Icon, value, label }: { icon: LucideIcon; value: string | null; label: string }) {
+function ContactRow({ icon: Icon, value, label, href }: { icon: LucideIcon; value: string | null; label: string; href?: string }) {
   return (
     <li className="flex items-start gap-3">
       <Icon aria-hidden="true" size={18} className="mt-0.5 shrink-0 text-gold-400" />
       <span>
         <span className="sr-only">{label}: </span>
-        {value ?? <span className="text-on-dark-muted italic">{label} pending approval</span>}
+        {value ? (
+          href ? (
+            <a href={href} className="hover:text-gold-400">
+              {value}
+            </a>
+          ) : (
+            value
+          )
+        ) : (
+          <span className="text-on-dark-muted italic">{label} pending approval</span>
+        )}
       </span>
     </li>
   );
@@ -41,8 +51,8 @@ export function SiteFooter() {
           </p>
           <ul className="space-y-3 text-sm">
             <ContactRow icon={MapPin} label="Address" value={contact.address} />
-            <ContactRow icon={Phone} label="Phone" value={contact.phone} />
-            <ContactRow icon={Mail} label="Email" value={contact.email} />
+            <ContactRow icon={Phone} label="Phone" value={contact.phone} href={contact.phoneHref ? `tel:${contact.phoneHref}` : undefined} />
+            <ContactRow icon={Mail} label="Email" value={contact.email} href={contact.email ? `mailto:${contact.email}` : undefined} />
             <ContactRow icon={Clock} label="Office hours" value={contact.officeHours} />
           </ul>
         </div>
