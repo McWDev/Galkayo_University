@@ -25,7 +25,7 @@ export const homeContent = {
     titleLine1: "Study with Galkayo University",
     titleLine2: "One Step For Higher Education",
     intro: "A university in Galkayo, Somalia, preparing the next generation of professionals, researchers and leaders since 2010.",
-    primaryCta: { label: "Apply for [Year]", href: "/admissions/apply" },
+    primaryCta: { label: "Apply for 2027", href: "/admissions/apply" },
     secondaryCta: { label: "Explore Programmes", href: "/academics/programmes" },
     /** Optional background photo, e.g. "/images/hero.jpg" (must be a GU photo you have permission to use). */
     image: null as string | null,
@@ -35,8 +35,8 @@ export const homeContent = {
     { value: "1000+", label: "Students Enrolled", icon: "users" },
     { value: "5", label: "Faculties", icon: "faculties" },
     { value: "16+", label: "Years of Excellence", icon: "years" },
-    { value: "[Number]", label: "Campuses in Galkayo", icon: "campuses" },
-    { value: "[Number]+", label: "Alumni", icon: "alumni" },
+    { value: "3", label: "Campuses in Galkayo", icon: "campuses" },
+    { value: "1500+", label: "Alumni", icon: "alumni" },
   ] satisfies { value: string; label: string; icon: IconName }[],
 
   about: {
@@ -46,7 +46,7 @@ export const homeContent = {
     foundedLabel: "Founded",
     image: null as string | null,
     paragraphs: [
-      "Galkayo University (GU) is a [non-profit / private / public] higher education institution in Galkayo, Somalia. It was founded in 2010, beginning with [founding faculties or programmes] to train the [doctors, teachers, administrators, etc.] the region needed. Today the university operates [Number] campuses: [campus names].",
+      "Galkayo University (GU) is a [non-profit / private / public] higher education institution in Galkayo, Somalia. It was founded in 2010, beginning with [founding faculties or programmes] to train the [doctors, teachers, administrators, etc.] the region needed. Today the university operates 3 campuses in Galkayo: [campus names].",
       "Since then, GU has grown steadily, building a supportive learning environment with facilities that include [classrooms, computer laboratories, a library, science laboratories]. A culture of teamwork and collaboration has shaped the university's academic and professional development.",
     ],
     objectivesTitle: "University Objectives",

@@ -31,7 +31,7 @@ export const siteConfig = {
   },
 
   footer: {
-    description: "A [non-profit] university in Galkayo, Somalia. Founded in 2010 with 5 faculties, [Number] campuses and 1000+ students.",
+    description: "A [non-profit] university in Galkayo, Somalia. Founded in 2010 with 5 faculties, 3 campuses and 1000+ students.",
     newsletterTitle: "Stay Updated",
     newsletterText: "Follow the latest news, events and announcements from Galkayo University.",
     applyPrompt: "Ready to start your academic journey?",
