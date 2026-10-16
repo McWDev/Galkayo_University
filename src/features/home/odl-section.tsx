@@ -1,15 +1,13 @@
 import { ArrowRight, BookOpen, Building2, CalendarRange, MonitorSmartphone } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
 import { SectionHeading } from "@/components/ui/section-heading";
+import type { HomeContent } from "./data";
 
 const statIcons: LucideIcon[] = [BookOpen, Building2, MonitorSmartphone, CalendarRange];
 
-export function OdlSection() {
-  const odl = homeContent.odl;
-
+export function OdlSection({ odl }: { odl: HomeContent["odl"] }) {
   return (
     <section aria-labelledby="odl-title" className="bg-surface py-20 sm:py-24">
       <div className="container-page">

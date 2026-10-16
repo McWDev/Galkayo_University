@@ -86,11 +86,12 @@ export function Testimonials({ eyebrow, title, items }: { eyebrow: string; title
                   <button
                     type="button"
                     onClick={() => setIndex(i)}
-                    aria-label={`Show testimonial ${i + 1} of ${items.length}`}
                     aria-current={i === index ? "true" : undefined}
                     className={`flex flex-col items-center gap-2 transition-opacity ${i === index ? "opacity-100" : "opacity-50 hover:opacity-80"}`}
                   >
+                    {/* Accessible name starts with the visible name (WCAG 2.5.3 Label in Name) */}
                     <span
+                      aria-hidden="true"
                       className={`flex size-14 items-center justify-center rounded-full bg-brand-700 font-display text-lg font-bold text-white ${
                         i === index ? "ring-4 ring-gold-400" : "ring-2 ring-white/30"
                       }`}
@@ -98,6 +99,9 @@ export function Testimonials({ eyebrow, title, items }: { eyebrow: string; title
                       {initialOf(t.name)}
                     </span>
                     <span className="max-w-24 truncate text-sm font-semibold text-white">{t.name}</span>
+                    <span className="sr-only">
+                      (testimonial {i + 1} of {items.length})
+                    </span>
                   </button>
                 </li>
               ))}

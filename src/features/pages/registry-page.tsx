@@ -44,7 +44,7 @@ function ContentBody({ page }: { page: PageDef }) {
             <h2 id="related-title" className="mb-8 text-2xl font-bold sm:text-3xl">
               In this section
             </h2>
-            <LinkCards items={toCards(siblings)} />
+            <LinkCards items={toCards(siblings)} headingLevel={3} />
           </div>
         </section>
       )}

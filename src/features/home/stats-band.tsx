@@ -1,7 +1,8 @@
 import { Award, BookOpen, GraduationCap, MapPin, Users } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { homeContent, type IconName } from "@/content/home";
+import type { IconName } from "@/content/home";
 import { T } from "@/components/ui/editable-text";
+import type { HomeContent } from "./data";
 
 const icons: Record<IconName, LucideIcon> = {
   users: Users,
@@ -11,12 +12,12 @@ const icons: Record<IconName, LucideIcon> = {
   alumni: GraduationCap,
 };
 
-export function StatsBand() {
+export function StatsBand({ stats }: { stats: HomeContent["stats"] }) {
   return (
     <section aria-label="University at a glance" className="bg-gold-400 text-brand-900">
       <div className="container-page py-10">
         <ul className="grid grid-cols-2 gap-y-8 sm:grid-cols-3 lg:grid-cols-5 lg:divide-x lg:divide-brand-900/15">
-          {homeContent.stats.map((stat) => {
+          {stats.map((stat) => {
             const Icon = icons[stat.icon];
             return (
               <li key={stat.label} className="flex flex-col items-center px-4 text-center">

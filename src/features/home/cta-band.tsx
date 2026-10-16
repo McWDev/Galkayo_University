@@ -1,11 +1,9 @@
 import { ArrowRight } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
+import type { HomeContent } from "./data";
 
-export function CtaBand() {
-  const cta = homeContent.cta;
-
+export function CtaBand({ cta }: { cta: HomeContent["cta"] }) {
   return (
     <section aria-labelledby="cta-title" className="bg-gold-400">
       <div className="container-page flex flex-col gap-6 py-14 md:flex-row md:items-center md:justify-between">

@@ -1,10 +1,9 @@
 import Link from "next/link";
 import { ArrowRight, Building2, Globe2 } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { T } from "@/components/ui/editable-text";
+import type { HomeContent } from "./data";
 
-export function PartnersSection() {
-  const partners = homeContent.partners;
+export function PartnersSection({ partners }: { partners: HomeContent["partners"] }) {
   if (partners.items.length === 0) return null;
 
   return (

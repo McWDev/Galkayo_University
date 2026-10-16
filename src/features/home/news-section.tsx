@@ -1,15 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Calendar, Tag } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { Carousel } from "@/components/ui/carousel";
 import { T } from "@/components/ui/editable-text";
 import { ImagePlaceholder } from "@/components/ui/placeholders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { formatDate } from "@/lib/format";
+import type { HomeContent } from "./data";
 
-export function NewsSection() {
-  const news = homeContent.news;
+export function NewsSection({ news }: { news: HomeContent["news"] }) {
   if (news.items.length === 0) return null;
 
   return (

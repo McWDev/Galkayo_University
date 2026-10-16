@@ -1,16 +1,15 @@
 import Link from "next/link";
 import { ArrowRight, ClipboardCheck, GraduationCap, Mail, Phone, Search, Send } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { siteConfig } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
 import { SectionHeading } from "@/components/ui/section-heading";
+import type { HomeContent } from "./data";
 
 const stepIcons: LucideIcon[] = [Search, ClipboardCheck, Send, GraduationCap];
 
-export function AdmissionsSection() {
-  const admissions = homeContent.admissions;
+export function AdmissionsSection({ admissions }: { admissions: HomeContent["admissions"] }) {
   const { info } = admissions;
   const { contact } = siteConfig;
 
@@ -35,9 +34,12 @@ export function AdmissionsSection() {
                   key={title}
                   className="group relative overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface p-7 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-pop)]"
                 >
-                  <span aria-hidden="true" className="absolute -top-3 right-3 font-display text-8xl font-extrabold text-brand-50 select-none">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
+                  {/* Decorative step number drawn with CSS so it isn't read as low-contrast text */}
+                  <span
+                    aria-hidden="true"
+                    data-step={String(index + 1).padStart(2, "0")}
+                    className="absolute -top-3 right-3 font-display text-8xl font-extrabold text-brand-50 select-none before:content-[attr(data-step)]"
+                  />
                   <span className="relative flex size-12 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
                     <Icon aria-hidden="true" size={24} />
                   </span>

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { homeContent } from "@/content/home";
 import { AboutIntro } from "@/features/home/about-intro";
 import { AdmissionsSection } from "@/features/home/admissions-section";
 import { CtaBand } from "@/features/home/cta-band";
+import { getHomeContent } from "@/features/home/data";
 import { FacultiesSection } from "@/features/home/faculties-section";
 import { GraduateSchool } from "@/features/home/graduate-school";
 import { Hero } from "@/features/home/hero";
@@ -17,22 +17,22 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
-// Section order follows the reference site. Text lives in src/content/home.ts.
-export default function HomePage() {
-  const { testimonials } = homeContent;
+// Section order follows the reference site. Data comes from getHomeContent() (content file today, CMS later).
+export default async function HomePage() {
+  const content = await getHomeContent();
   return (
     <>
-      <Hero />
-      <StatsBand />
-      <AboutIntro />
-      <FacultiesSection />
-      <AdmissionsSection />
-      <GraduateSchool />
-      <OdlSection />
-      <NewsSection />
-      <Testimonials eyebrow={testimonials.eyebrow} title={testimonials.title} items={testimonials.items} />
-      <PartnersSection />
-      <CtaBand />
+      <Hero hero={content.hero} />
+      <StatsBand stats={content.stats} />
+      <AboutIntro about={content.about} />
+      <FacultiesSection faculties={content.faculties} />
+      <AdmissionsSection admissions={content.admissions} />
+      <GraduateSchool gs={content.graduateSchool} />
+      <OdlSection odl={content.odl} />
+      <NewsSection news={content.news} />
+      <Testimonials eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} items={content.testimonials.items} />
+      <PartnersSection partners={content.partners} />
+      <CtaBand cta={content.cta} />
     </>
   );
 }

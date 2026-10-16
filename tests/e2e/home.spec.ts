@@ -34,8 +34,8 @@ test.describe("home page", () => {
   test("testimonial selector switches the quote", async ({ page }) => {
     await page.goto("/");
     const section = page.getByRole("region", { name: "What Our Graduates Say" }).or(page.locator("section[aria-labelledby=testimonials-title]"));
-    await section.getByRole("button", { name: "Show testimonial 2 of 4" }).click();
-    await expect(section.getByRole("button", { name: "Show testimonial 2 of 4" })).toHaveAttribute("aria-current", "true");
+    await section.getByRole("button", { name: /testimonial 2 of 4/ }).click();
+    await expect(section.getByRole("button", { name: /testimonial 2 of 4/ })).toHaveAttribute("aria-current", "true");
   });
 
   test("all images have alt attributes", async ({ page }) => {

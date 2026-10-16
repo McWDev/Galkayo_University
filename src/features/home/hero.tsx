@@ -1,13 +1,11 @@
 import Image from "next/image";
 import { ChevronRight, GraduationCap } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
+import type { HomeContent } from "./data";
 
 /** Full-height hero. Uses a branded background unless a permissioned GU photo is set in content. */
-export function Hero() {
-  const hero = homeContent.hero;
-
+export function Hero({ hero }: { hero: HomeContent["hero"] }) {
   return (
     <section aria-labelledby="hero-title" className="on-dark relative isolate overflow-hidden bg-brand-900">
       {hero.image ? (

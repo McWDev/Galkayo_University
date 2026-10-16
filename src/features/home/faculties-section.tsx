@@ -1,15 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
 import { ImagePlaceholder } from "@/components/ui/placeholders";
 import { SectionHeading } from "@/components/ui/section-heading";
+import type { HomeContent } from "./data";
 
-export function FacultiesSection() {
-  const faculties = homeContent.faculties;
-
+export function FacultiesSection({ faculties }: { faculties: HomeContent["faculties"] }) {
   return (
     <section aria-labelledby="faculties-title" className="bg-surface py-20 sm:py-24">
       <div className="container-page">

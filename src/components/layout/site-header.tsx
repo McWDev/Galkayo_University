@@ -42,7 +42,7 @@ function ContactLinks() {
 /** Top bar above the main menu: university contact on the left, systems (HEMIS, Verify, Student Portal) on the right. */
 function TopBar() {
   return (
-    <div className="on-dark border-b border-white/10 bg-brand-950 text-sm">
+    <div role="region" aria-label="Contact and university systems" className="on-dark border-b border-white/10 bg-brand-950 text-sm">
       <div className={`${headerContainer} h-10`}>
         <ContactLinks />
         <nav aria-label="University systems">

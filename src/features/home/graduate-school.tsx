@@ -1,12 +1,10 @@
 import Link from "next/link";
 import { ChevronRight, Clock, GraduationCap, MonitorSmartphone } from "lucide-react";
-import { homeContent } from "@/content/home";
 import { ButtonLink } from "@/components/ui/button-link";
 import { T } from "@/components/ui/editable-text";
+import type { HomeContent } from "./data";
 
-export function GraduateSchool() {
-  const gs = homeContent.graduateSchool;
-
+export function GraduateSchool({ gs }: { gs: HomeContent["graduateSchool"] }) {
   return (
     <section aria-labelledby="graduate-title" className="on-dark relative isolate overflow-hidden bg-brand-900 py-20 sm:py-24">
       <div aria-hidden="true" className="bg-dots absolute inset-0 -z-10 opacity-50" />
