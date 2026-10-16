@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Source_Serif_4 } from "next/font/google";
+import { Poppins, Saira } from "next/font/google";
 import { getSiteUrl } from "@/lib/env";
 import "./globals.css";
 
 // Self-hosted by next/font at build time: no runtime requests to Google.
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const sourceSerif = Source_Serif_4({ subsets: ["latin"], variable: "--font-source-serif", display: "swap" });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins", display: "swap" });
+const saira = Saira({ subsets: ["latin"], weight: ["600", "700", "800"], variable: "--font-saira", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL(getSiteUrl()),
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#06402b",
+  themeColor: "#032a1c",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`}>
+    <html lang="en" className={`${poppins.variable} ${saira.variable}`}>
       <body className="min-h-screen antialiased">{children}</body>
     </html>
   );

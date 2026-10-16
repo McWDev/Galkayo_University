@@ -24,7 +24,7 @@ Requires **Node.js 20.9+** (developed on Node 24).
 ```bash
 npm install
 cp .env.example .env.local   # fill in values; never commit .env.local
-npm run dev                  # http://localhost:3000
+npm run dev                  # http://localhost:2000
 ```
 
 ## Scripts

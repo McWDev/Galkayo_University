@@ -35,22 +35,35 @@ test.describe("shared layout", () => {
     expect(headers["strict-transport-security"]).toContain("max-age=");
     expect(headers["x-powered-by"]).toBeUndefined();
   });
+
+  test("page has no horizontal overflow", async ({ page }) => {
+    await page.goto("/");
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(0);
+  });
 });
 
 test.describe("desktop navigation", () => {
   test.skip(({ isMobile }) => isMobile, "desktop only");
 
+  test("shows the reference menu in order", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Main" });
+    const labels = await nav.locator(":scope > ul > li").evaluateAll((lis) => lis.map((li) => li.firstElementChild?.textContent?.trim()));
+    expect(labels).toEqual(["Home", "About", "Academics", "ODL", "Research", "Policies", "Media", "HEMIS", "Student Portal", "Verify", "Contact Us"]);
+  });
+
   test("menus open with keyboard, expose state, and close on Escape", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Main" });
-    const trigger = nav.getByRole("button", { name: "Academics" });
+    const trigger = nav.getByRole("button", { name: "About" });
 
     await trigger.focus();
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
     await page.keyboard.press("Enter");
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
 
-    const firstLink = nav.getByRole("link", { name: /Faculties/ });
+    const firstLink = nav.getByRole("link", { name: "About Us" });
     await expect(firstLink).toBeVisible();
     await page.keyboard.press("Tab");
     await expect(firstLink).toBeFocused();
@@ -61,6 +74,18 @@ test.describe("desktop navigation", () => {
     await expect(firstLink).toBeHidden();
   });
 
+  test("academics mega menu opens on hover and stays open when clicked", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Main" });
+    const trigger = nav.getByRole("button", { name: "Academics" });
+    await trigger.hover();
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await expect(nav.getByText("Undergraduate", { exact: true })).toBeVisible();
+    await expect(nav.getByRole("link", { name: "Admission Requirements" })).toBeVisible();
+    await trigger.click();
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
   test("only one menu is open at a time and outside click closes it", async ({ page }) => {
     await page.goto("/");
     const nav = page.getByRole("navigation", { name: "Main" });
@@ -68,8 +93,18 @@ test.describe("desktop navigation", () => {
     await nav.getByRole("button", { name: "Research" }).click();
     await expect(nav.getByRole("button", { name: "About" })).toHaveAttribute("aria-expanded", "false");
     await expect(nav.getByRole("button", { name: "Research" })).toHaveAttribute("aria-expanded", "true");
-    await page.locator("h1").click();
+    await page.mouse.move(700, 600);
+    await page.mouse.click(700, 600);
     await expect(nav.getByRole("button", { name: "Research" })).toHaveAttribute("aria-expanded", "false");
+  });
+
+  test("unconfigured portals link to internal pages, not external sites", async ({ page }) => {
+    await page.goto("/");
+    const nav = page.getByRole("navigation", { name: "Main" });
+    for (const name of ["HEMIS", "Student Portal", "Verify"]) {
+      const href = await nav.getByRole("link", { name, exact: true }).getAttribute("href");
+      expect(href, name).toMatch(/^\//);
+    }
   });
 
   test("mobile menu button is hidden", async ({ page }) => {
@@ -87,8 +122,8 @@ test.describe("mobile navigation", () => {
     const dialog = page.getByRole("dialog", { name: "Site menu" });
     await expect(dialog).toBeVisible();
 
-    await dialog.getByText("Admissions", { exact: true }).tap();
-    await expect(dialog.getByRole("link", { name: "How to Apply" })).toBeVisible();
+    await dialog.getByText("Academics", { exact: true }).tap();
+    await expect(dialog.getByRole("link", { name: "Admission Requirements" })).toBeVisible();
 
     await dialog.getByRole("button", { name: "Close" }).tap();
     await expect(dialog).toBeHidden();
@@ -104,11 +139,5 @@ test.describe("mobile navigation", () => {
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
     await expect(trigger).toBeFocused();
-  });
-
-  test("page has no horizontal overflow", async ({ page }) => {
-    await page.goto("/");
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    expect(overflow).toBeLessThanOrEqual(0);
   });
 });

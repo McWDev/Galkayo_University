@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { footerLinks, isActivePath, mainNavigation, primaryCta, utilityNavigation } from "@/config/navigation";
+import { footerLinks, isActivePath, isItemActive, linksOf, mainNavigation, primaryCta } from "@/config/navigation";
 
 describe("isActivePath", () => {
   it("matches the exact route and its descendants", () => {
@@ -18,35 +18,47 @@ describe("isActivePath", () => {
 });
 
 describe("navigation config", () => {
-  const allLinks = [
-    ...mainNavigation.flatMap((s) => [s, ...(s.children ?? [])]),
-    ...utilityNavigation,
-    ...footerLinks.flatMap((g) => g.links),
-    primaryCta,
-  ];
-
-  it("uses only internal, root-relative hrefs", () => {
-    for (const link of allLinks) {
-      expect(link.href, link.label).toMatch(/^\/[a-z0-9\-/]*$/);
-    }
-  });
-
-  it("has unique labels within each section", () => {
-    for (const section of mainNavigation) {
-      const labels = (section.children ?? []).map((c) => c.label);
-      expect(new Set(labels).size).toBe(labels.length);
-    }
-  });
-
-  it("covers every top-level section from the sitemap", () => {
-    expect(mainNavigation.map((s) => s.label)).toEqual([
+  it("mirrors the reference top-level menu", () => {
+    expect(mainNavigation.map((i) => i.label)).toEqual([
+      "Home",
       "About",
       "Academics",
-      "Admissions",
+      "ODL",
       "Research",
-      "University Life",
-      "News & Events",
-      "Resources",
+      "Policies",
+      "Media",
+      "HEMIS",
+      "Student Portal",
+      "Verify",
+      "Contact Us",
     ]);
+  });
+
+  it("uses root-relative internal hrefs, or https for configured external systems", () => {
+    const all = [...mainNavigation.flatMap(linksOf), ...footerLinks.flatMap((g) => g.links), primaryCta];
+    for (const link of all) {
+      if (link.external) expect(link.href, link.label).toMatch(/^https:\/\//);
+      else expect(link.href, link.label).toMatch(/^\/[a-z0-9\-/]*$/);
+    }
+  });
+
+  it("never links unconfigured portals to an external site", () => {
+    for (const label of ["HEMIS", "Student Portal", "Verify"]) {
+      const item = mainNavigation.find((i) => i.label === label);
+      expect(item && linksOf(item)[0]?.external).toBeFalsy();
+    }
+  });
+
+  it("marks a menu active when the current page is inside it", () => {
+    const academics = mainNavigation.find((i) => i.label === "Academics")!;
+    expect(isItemActive("/admissions/fees", academics)).toBe(true);
+    expect(isItemActive("/research/policy", academics)).toBe(false);
+  });
+
+  it("has unique labels within each menu", () => {
+    for (const item of mainNavigation) {
+      const labels = linksOf(item).map((l) => l.label);
+      expect(new Set(labels).size, item.label).toBe(labels.length);
+    }
   });
 });

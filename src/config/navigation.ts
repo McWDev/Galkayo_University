@@ -1,126 +1,206 @@
 /**
- * Public navigation, derived from docs/prd/02-SITEMAP-AND-CONTENT.md.
- * Routes are created in Task 003; items become CMS-editable (navigation_items) in Task 014.
+ * Public navigation. Menu structure mirrors the owner's chosen reference (salaam.edu.so):
+ * Home · About · Academics (mega menu) · ODL · Research · Policies · Media · HEMIS · Student Portal · Verify · Contact Us.
+ * Items become CMS-editable (navigation_items) in Task 014.
+ *
+ * GU-specific lists (faculties, partner universities, masters programmes) are empty until GU approves them;
+ * empty groups are not rendered. External systems (HEMIS, student portal, certificate verification) link to
+ * their real URL only when configured in `siteConfig.externalSystems`; otherwise to an internal page explaining
+ * the service is not yet available online — never to a fake portal.
  */
+import {
+  BookOpen,
+  Building2,
+  ClipboardList,
+  FileCheck,
+  FileText,
+  FlaskConical,
+  GraduationCap,
+  Handshake,
+  Images,
+  Info,
+  LayoutGrid,
+  MessageSquareQuote,
+  Network,
+  Newspaper,
+  CalendarDays,
+  Receipt,
+  Scale,
+  ShieldCheck,
+  Upload,
+  Users,
+  type LucideIcon,
+} from "lucide-react";
+import { siteConfig } from "./site";
+
 export type NavLink = {
   label: string;
   href: string;
   description?: string;
+  icon?: LucideIcon;
+  external?: boolean;
 };
 
-export type NavSection = NavLink & {
-  children?: NavLink[];
+export type MegaGroup = { heading: string; links: NavLink[]; style?: "list" | "chips" };
+export type MegaColumn = { heading: string; groups: MegaGroup[] };
+
+export type NavItem =
+  | ({ kind: "link"; highlight?: boolean } & NavLink)
+  | { kind: "dropdown"; label: string; href: string; links: NavLink[] }
+  | { kind: "mega"; label: string; href: string; columns: MegaColumn[] };
+
+/** Approved GU data feeding the Academics mega menu (filled from the CMS once published). */
+const academicMenuData = {
+  faculties: [] as NavLink[],
+  partnerUniversities: [] as NavLink[],
+  mastersProgrammes: [] as NavLink[],
 };
 
-export const mainNavigation: NavSection[] = [
+function externalOr(url: string | null, fallback: string): Pick<NavLink, "href" | "external"> {
+  return url ? { href: url, external: true } : { href: fallback };
+}
+
+export const mainNavigation: NavItem[] = [
+  { kind: "link", label: "Home", href: "/" },
   {
+    kind: "dropdown",
     label: "About",
     href: "/about",
-    children: [
-      { label: "Overview", href: "/about", description: "Who we are" },
-      { label: "History", href: "/about/history", description: "Our story" },
-      { label: "Mission, Vision & Values", href: "/about/mission-vision-values", description: "What guides us" },
-      { label: "Leadership & Governance", href: "/about/leadership", description: "University leadership" },
-      { label: "Campuses & Facilities", href: "/about/campuses", description: "Where we teach and learn" },
+    links: [
+      { label: "About Us", href: "/about", icon: Info },
+      { label: "Rector's Message", href: "/about/rectors-message", icon: MessageSquareQuote },
+      { label: "Governance", href: "/about/governance", icon: ShieldCheck },
+      { label: "Structure", href: "/about/structure", icon: Network },
+      { label: "Our Staff", href: "/about/staff", icon: Users },
+      { label: "Alumni", href: "/alumni", icon: GraduationCap },
+      { label: "Partnerships", href: "/partnerships", icon: Building2 },
     ],
   },
   {
+    kind: "mega",
     label: "Academics",
     href: "/academics",
-    children: [
-      { label: "Faculties", href: "/academics/faculties", description: "Our academic faculties" },
-      { label: "Departments", href: "/academics/departments", description: "Teaching departments" },
-      { label: "Academic Programmes", href: "/academics/programmes", description: "Find a programme" },
-      { label: "Academic Calendar", href: "/academics/calendar", description: "Key academic dates" },
+    columns: [
+      {
+        heading: "Undergraduate",
+        groups: [
+          {
+            heading: "Admissions",
+            links: [
+              { label: "Admission Requirements", href: "/admissions/requirements" },
+              { label: "Admission Contact", href: "/admissions/contact" },
+              { label: "Transfer Application", href: "/admissions/transfer" },
+              { label: "Guideline for Guardians", href: "/admissions/guardians" },
+              { label: "Tuition Fees", href: "/admissions/fees" },
+              { label: "Scholarships", href: "/admissions/scholarships" },
+              { label: "Apply Now", href: "/admissions/apply" },
+            ],
+          },
+          {
+            heading: "Faculties",
+            links: academicMenuData.faculties.length
+              ? academicMenuData.faculties
+              : [
+                  { label: "All Faculties", href: "/academics/faculties" },
+                  { label: "Departments", href: "/academics/departments" },
+                  { label: "Academic Programmes", href: "/academics/programmes" },
+                  { label: "Academic Calendar", href: "/academics/calendar" },
+                ],
+          },
+        ],
+      },
+      {
+        heading: "Postgraduate",
+        groups: [
+          {
+            heading: "Graduate School",
+            links: [
+              { label: "About Graduate School", href: "/graduate-school" },
+              { label: "All Programmes", href: "/graduate-school/programmes" },
+              { label: "Our Partners", href: "/graduate-school/partners" },
+              { label: "Apply for Postgraduate", href: "/graduate-school/apply" },
+            ],
+          },
+          { heading: "Partner Universities", links: academicMenuData.partnerUniversities },
+          { heading: "Masters Programmes", links: academicMenuData.mastersProgrammes, style: "chips" },
+        ],
+      },
     ],
   },
   {
-    label: "Admissions",
-    href: "/admissions",
-    children: [
-      { label: "How to Apply", href: "/admissions/how-to-apply", description: "Step-by-step guidance" },
-      { label: "Entry Requirements", href: "/admissions/requirements", description: "What you need" },
-      { label: "Tuition & Fees", href: "/admissions/fees", description: "Approved fee information" },
-      { label: "Scholarships & Financial Aid", href: "/admissions/scholarships", description: "Support for students" },
-      { label: "FAQs", href: "/admissions/faqs", description: "Common questions" },
-      { label: "Contact Admissions", href: "/admissions/contact", description: "Talk to our team" },
+    kind: "dropdown",
+    label: "ODL",
+    href: "/odl",
+    links: [
+      { label: "ODL Programmes", href: "/odl/programmes", icon: BookOpen },
+      { label: "Apply for ODL", href: "/odl/apply", icon: FileCheck },
+      { label: "ODL Admission Form", href: "/odl/admission", icon: ClipboardList },
+      { label: "ODL Student Portal", ...externalOr(siteConfig.externalSystems.odlPortal, "/odl/portal"), icon: LayoutGrid },
     ],
   },
   {
+    kind: "dropdown",
     label: "Research",
     href: "/research",
-    children: [
-      { label: "Research Office & Centres", href: "/research/centres", description: "Research at GU" },
-      { label: "Publications", href: "/research/publications", description: "Research highlights" },
-      { label: "Conferences & Seminars", href: "/research/conferences", description: "Academic events" },
+    links: [
+      { label: "Research Projects", href: "/research/projects", icon: FlaskConical },
+      { label: "Partnerships", href: "/research/partnerships", icon: Handshake },
+      { label: "Research Policy", href: "/research/policy", icon: FileText },
+      { label: "Ethical Clearance", href: "/research/ethics", icon: Scale },
+      { label: "Submit Research", href: "/research/submit", icon: Upload },
     ],
   },
   {
-    label: "University Life",
-    href: "/university-life",
-    children: [
-      { label: "Student Activities", href: "/university-life/student-activities", description: "Campus life" },
-      { label: "Library", href: "/library", description: "Resources and services" },
-      { label: "Alumni", href: "/university-life/alumni", description: "Our graduates" },
+    kind: "dropdown",
+    label: "Policies",
+    href: "/policies",
+    links: [
+      { label: "Student Policy", href: "/policies/student", icon: FileText },
+      { label: "Student Fees Payment Policy", href: "/policies/fees-payment", icon: Receipt },
+      { label: "Registration for Thesis", href: "/policies/thesis", icon: GraduationCap },
     ],
   },
   {
-    label: "News & Events",
-    href: "/news",
-    children: [
-      { label: "News", href: "/news", description: "Latest from GU" },
-      { label: "Announcements", href: "/news/announcements", description: "Official notices" },
-      { label: "Events", href: "/events", description: "What is coming up" },
-      { label: "Gallery", href: "/gallery", description: "Photos from campus" },
+    kind: "dropdown",
+    label: "Media",
+    href: "/media",
+    links: [
+      { label: "News", href: "/news", icon: Newspaper },
+      { label: "Events", href: "/events", icon: CalendarDays },
+      { label: "Photos & Videos", href: "/media/gallery", icon: Images },
     ],
   },
-  {
-    label: "Resources",
-    href: "/resources",
-    children: [
-      { label: "Downloads", href: "/resources/downloads", description: "Prospectus, brochures and more" },
-      { label: "Policies", href: "/resources/policies", description: "University policies" },
-      { label: "Forms", href: "/resources/forms", description: "Official forms" },
-    ],
-  },
+  { kind: "link", label: "HEMIS", ...externalOr(siteConfig.externalSystems.hemis, "/hemis") },
+  { kind: "link", label: "Student Portal", highlight: true, ...externalOr(siteConfig.externalSystems.studentPortal, "/student-portal") },
+  { kind: "link", label: "Verify", ...externalOr(siteConfig.externalSystems.verifyCertificate, "/verify-certificate") },
+  { kind: "link", label: "Contact Us", href: "/contact" },
 ];
 
-/** Utility links in the top bar. No portal link until GU supplies a real one. */
-export const utilityNavigation: NavLink[] = [
-  { label: "Library", href: "/library" },
-  { label: "News", href: "/news" },
-  { label: "Events", href: "/events" },
-  { label: "Contact", href: "/contact" },
-];
-
-export const primaryCta: NavLink = { label: "Apply", href: "/admissions" };
+export const primaryCta: NavLink = { label: "Apply Now", href: "/admissions/apply" };
 
 export const footerLinks: { heading: string; links: NavLink[] }[] = [
   {
-    heading: "University",
+    heading: "Academics",
+    links: [
+      { label: "Faculties", href: "/academics/faculties" },
+      { label: "Academic Programmes", href: "/academics/programmes" },
+      { label: "Graduate School", href: "/graduate-school" },
+      { label: "Open & Distance Learning", href: "/odl" },
+      { label: "Academic Calendar", href: "/academics/calendar" },
+      { label: "Our Library", href: "/library" },
+    ],
+  },
+  {
+    heading: "Quick Links",
     links: [
       { label: "About GU", href: "/about" },
-      { label: "Campuses & Facilities", href: "/about/campuses" },
-      { label: "News & Events", href: "/news" },
-      { label: "Contact Us", href: "/contact" },
-    ],
-  },
-  {
-    heading: "Study",
-    links: [
-      { label: "Academic Programmes", href: "/academics/programmes" },
-      { label: "Faculties", href: "/academics/faculties" },
-      { label: "Admissions", href: "/admissions" },
+      { label: "Admissions", href: "/admissions/requirements" },
       { label: "Scholarships", href: "/admissions/scholarships" },
-    ],
-  },
-  {
-    heading: "Resources",
-    links: [
-      { label: "Library", href: "/library" },
-      { label: "Research", href: "/research" },
+      { label: "Tuition Fees", href: "/admissions/fees" },
+      { label: "Latest News", href: "/news" },
+      { label: "Photo Gallery", href: "/media/gallery" },
       { label: "Downloads", href: "/resources/downloads" },
-      { label: "Policies", href: "/resources/policies" },
+      { label: "Contact Us", href: "/contact" },
     ],
   },
 ];
@@ -130,3 +210,16 @@ export function isActivePath(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
+
+/** Every link inside a nav item, flattened (used for active-state checks and tests). */
+export function linksOf(item: NavItem): NavLink[] {
+  if (item.kind === "link") return [item];
+  if (item.kind === "dropdown") return item.links;
+  return item.columns.flatMap((c) => c.groups.flatMap((g) => g.links));
+}
+
+export function isItemActive(pathname: string, item: NavItem): boolean {
+  if (item.kind === "link") return !item.external && isActivePath(pathname, item.href);
+  return isActivePath(pathname, item.href) || linksOf(item).some((l) => !l.external && l.href !== "/" && isActivePath(pathname, l.href));
+}
+

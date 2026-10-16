@@ -1,3 +1,4 @@
+import { BackToTop } from "@/components/layout/back-to-top";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SkipLink } from "@/components/layout/skip-link";
@@ -11,6 +12,7 @@ export default function PublicLayout({ children }: Readonly<{ children: React.Re
         {children}
       </main>
       <SiteFooter />
+      <BackToTop />
     </div>
   );
 }
