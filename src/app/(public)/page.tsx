@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { homeContent } from "@/content/home";
 import { AboutIntro } from "@/features/home/about-intro";
 import { AdmissionsSection } from "@/features/home/admissions-section";
@@ -10,6 +11,11 @@ import { OdlSection } from "@/features/home/odl-section";
 import { PartnersSection } from "@/features/home/partners-section";
 import { StatsBand } from "@/features/home/stats-band";
 import { Testimonials } from "@/features/home/testimonials";
+
+export const metadata: Metadata = {
+  title: { absolute: "Galkayo University" },
+  alternates: { canonical: "/" },
+};
 
 // Section order follows the reference site. Text lives in src/content/home.ts.
 export default function HomePage() {

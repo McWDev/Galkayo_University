@@ -1,18 +1,5 @@
-import { BackToTop } from "@/components/layout/back-to-top";
-import { SiteFooter } from "@/components/layout/site-footer";
-import { SiteHeader } from "@/components/layout/site-header";
-import { SkipLink } from "@/components/layout/skip-link";
+import { PublicShell } from "@/components/layout/public-shell";
 
 export default function PublicLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <div className="flex min-h-screen flex-col">
-      <SkipLink />
-      <SiteHeader />
-      <main id="main-content" tabIndex={-1} className="flex-1 outline-none">
-        {children}
-      </main>
-      <SiteFooter />
-      <BackToTop />
-    </div>
-  );
+  return <PublicShell>{children}</PublicShell>;
 }
