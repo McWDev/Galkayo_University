@@ -13,7 +13,7 @@ type Props = { params: Promise<{ slug: string[] }> };
 const toPath = (slug: string[]) => `/${slug.map((s) => decodeURIComponent(s)).join("/")}`;
 
 export function generateStaticParams() {
-  return [...pages.keys()].map((path) => ({ slug: path.split("/").filter(Boolean) }));
+  return [...pages.values()].filter((p) => !p.dedicated).map((p) => ({ slug: p.path.split("/").filter(Boolean) }));
 }
 
 // Only registered pages exist; anything else is a 404.
@@ -27,6 +27,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Page({ params }: Props) {
   const page = getPage(toPath((await params).slug));
-  if (!page) notFound();
+  if (!page || page.dedicated) notFound();
   return <RegistryPage page={page} />;
 }

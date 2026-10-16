@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { aboutContent } from "@/content/about";
 import { faculties } from "@/content/faculties";
 import { homeContent } from "@/content/home";
 import { footerLinks, mainNavigation, topBarLinks } from "@/config/navigation";
@@ -18,7 +19,7 @@ function strings(value: unknown): string[] {
 const REFERENCE_TERMS = [/salaam/i, /mogadishu/i, /hodan/i, /\bSU\b/, /unisza/i, /nilai/i, /mycampus/i, /605062/, /655062/];
 
 describe("no reference-site content", () => {
-  const text = strings([homeContent, siteConfig, faculties, [...pages.values()], mainNavigation, topBarLinks, footerLinks]);
+  const text = strings([aboutContent, homeContent, siteConfig, faculties, [...pages.values()], mainNavigation, topBarLinks, footerLinks]);
 
   for (const term of REFERENCE_TERMS) {
     it(`contains no "${term.source}"`, () => {

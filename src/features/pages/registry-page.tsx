@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { ContactStrip } from "@/components/page/contact-strip";
 import { LinkCards } from "@/components/page/link-cards";
 import { PageHero } from "@/components/page/page-hero";
+import { RelatedPages } from "@/components/page/related-pages";
 
 const toCards = (defs: PageDef[]) => defs.map((d) => ({ title: d.label ?? d.title, href: d.path, description: d.intro }));
 
@@ -38,16 +39,7 @@ function ContentBody({ page }: { page: PageDef }) {
           </EmptyState>
         </div>
       </section>
-      {siblings.length > 0 && (
-        <section aria-labelledby="related-title" className="bg-surface py-16">
-          <div className="container-page">
-            <h2 id="related-title" className="mb-8 text-2xl font-bold sm:text-3xl">
-              In this section
-            </h2>
-            <LinkCards items={toCards(siblings)} headingLevel={3} />
-          </div>
-        </section>
-      )}
+      <RelatedPages items={toCards(siblings)} />
     </>
   );
 }

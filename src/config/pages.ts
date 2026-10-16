@@ -27,15 +27,17 @@ export type PageDef = {
   parent?: string;
   /** Short label for breadcrumbs/cards when different from the title. */
   label?: string;
+  /** Rendered by a dedicated route file instead of the catch-all. */
+  dedicated?: true;
 };
 
 const defs: PageDef[] = [
   // About
-  { path: "/about", title: "About Galkayo University", label: "About Us", intro: "Who we are, our history, and what guides us.", kind: "index" },
-  { path: "/about/rectors-message", title: "Rector's Message", intro: "A message from the Rector of Galkayo University." },
-  { path: "/about/governance", title: "University Governance", label: "Governance", intro: "How Galkayo University is led, managed and held accountable." },
-  { path: "/about/structure", title: "Organisational Structure", label: "Structure", intro: "The faculties, offices and units that make up the university." },
-  { path: "/about/staff", title: "Our Staff", intro: "The academic and administrative staff of Galkayo University." },
+  { path: "/about", title: "About Galkayo University", label: "About Us", intro: "Who we are, our history, and what guides us.", kind: "index", dedicated: true },
+  { path: "/about/rectors-message", title: "Rector's Message", intro: "A message from the Rector of Galkayo University.", dedicated: true },
+  { path: "/about/governance", title: "University Governance", label: "Governance", intro: "How Galkayo University is led, managed and held accountable.", dedicated: true },
+  { path: "/about/structure", title: "Organisational Structure", label: "Structure", intro: "The faculties, offices and units that make up the university.", dedicated: true },
+  { path: "/about/staff", title: "Our Staff", intro: "The academic and administrative staff of Galkayo University.", dedicated: true },
   { path: "/alumni", title: "Alumni", intro: "Stay connected with the Galkayo University graduate community.", parent: "/about" },
   { path: "/partnerships", title: "Partnerships", intro: "Institutions and organisations Galkayo University works with.", parent: "/about" },
 

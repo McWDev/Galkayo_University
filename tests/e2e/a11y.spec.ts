@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
 // One page per template, plus the home page and 404.
-const routes = ["/", "/about", "/about/governance", "/academics/faculties/education", "/contact", "/student-portal", "/this-page-does-not-exist"];
+const routes = ["/", "/about", "/about/governance", "/about/rectors-message", "/about/structure", "/about/staff", "/academics/faculties/education", "/contact", "/student-portal", "/this-page-does-not-exist"];
 
 test.describe("accessibility (axe, WCAG 2.2 A/AA)", () => {
   for (const path of routes) {
