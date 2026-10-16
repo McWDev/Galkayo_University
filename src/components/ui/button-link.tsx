@@ -23,7 +23,7 @@ type ButtonLinkProps = ComponentProps<typeof Link> & {
 };
 
 export function buttonClasses(variant: ButtonVariant = "primary", size: keyof typeof sizes = "md") {
-  return `inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors ${variants[variant]} ${sizes[size]}`;
+  return `inline-flex items-center justify-center gap-2 rounded-lg font-semibold whitespace-nowrap transition-colors ${variants[variant]} ${sizes[size]}`;
 }
 
 export function ButtonLink({ variant = "primary", size = "md", className = "", ...props }: ButtonLinkProps) {

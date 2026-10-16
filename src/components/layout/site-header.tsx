@@ -3,6 +3,7 @@ import { ExternalLink, Mail, Megaphone, Phone } from "lucide-react";
 import { primaryCta, topBarLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { ButtonLink } from "@/components/ui/button-link";
+import { T } from "@/components/ui/editable-text";
 import { DesktopNav } from "./desktop-nav";
 import { Logo } from "./logo";
 import { MobileNav } from "./mobile-nav";
@@ -103,7 +104,9 @@ export function SiteHeader() {
         <div role="region" aria-label="Announcement" className="bg-gold-400 text-brand-900">
           <p className="container-page flex items-center justify-center gap-2 py-2.5 text-center text-sm font-semibold">
             <Megaphone aria-hidden="true" size={18} className="shrink-0" />
-            {siteConfig.announcement}
+            <span>
+              <T>{siteConfig.announcement}</T>
+            </span>
           </p>
         </div>
       )}

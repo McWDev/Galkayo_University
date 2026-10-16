@@ -1,13 +1,13 @@
 /**
- * Site-wide settings. These move to the CMS `site_settings` table in Task 014.
- * Every value that states a fact about GU must be approved by GU — leave it `null` until then.
+ * Site-wide settings and text. These move to the CMS `site_settings` table in Task 014.
+ * [Square-bracket] values are fill-in slots — see src/content/home.ts and `npm run content:check`.
  */
 export const siteConfig = {
   name: "Galkayo University",
   nameArabic: "جامعة جالكعيو",
 
-  /** Announcement bar text. Replace with an approved notice (e.g. admissions period) when available. */
-  announcement: "This website is under development. Official university information will be published once approved.",
+  /** Announcement bar text. Set to null to hide the bar. */
+  announcement: "Applications for the [Year–Year] academic year are now open. Apply before [Deadline]." as string | null,
 
   /**
    * Real URLs of GU's external systems. Leave `null` until GU supplies them: the menu then links to an
@@ -20,20 +20,27 @@ export const siteConfig = {
     verifyCertificate: null as string | null,
   },
 
-  /** Approved contact details. Email and phone supplied by the site owner (2026-10-16); others pending from GU. */
+  /** Contact details. Email and phone supplied by the site owner (2026-10-16). */
   contact: {
-    address: null as string | null,
+    address: "[Street / District], Galkayo, Somalia" as string | null,
     /** Display format; `phoneHref` is the dialable E.164 form used for tel: links. */
     phone: "+252 61 538 6858" as string | null,
     phoneHref: "+252615386858" as string | null,
     email: "info@galkayo.edu.so" as string | null,
-    officeHours: null as string | null,
+    officeHours: "[Days]: [Opening hours]" as string | null,
   },
-} as const;
 
-/**
- * Development-only example content (faculty cards, news, testimonials, partners) lets the design be
- * reviewed before GU supplies real content. It is visibly labelled "Example" and is never rendered in
- * production builds, where the real (CMS) content or an empty state is shown instead.
- */
-export const showDevExamples = process.env.NODE_ENV === "development";
+  footer: {
+    description: "A [non-profit] university in Galkayo, Somalia. Founded in [Year] with [Number] faculties, [Number] campuses and [Number]+ students.",
+    newsletterTitle: "Stay Updated",
+    newsletterText: "Follow the latest news, events and announcements from Galkayo University.",
+    applyPrompt: "Ready to start your academic journey?",
+  },
+
+  /** Official social media profile URLs. Icons appear only for entries that are set. */
+  social: {
+    facebook: null as string | null,
+    youtube: null as string | null,
+    x: null as string | null,
+  },
+};

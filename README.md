@@ -27,6 +27,17 @@ cp .env.example .env.local   # fill in values; never commit .env.local
 npm run dev                  # http://localhost:2000
 ```
 
+## Editing website text
+
+All home page text lives in **[src/content/home.ts](src/content/home.ts)**. Site-wide text (announcement bar, contact details, footer, portal URLs, social links) lives in **[src/config/site.ts](src/config/site.ts)**.
+
+- Anything in `[square brackets]` is a fill-in slot for a GU fact. Replace the whole slot, brackets included.
+- In `npm run dev`, unfilled slots are highlighted yellow on the page.
+- `npm run content:check` lists every remaining slot with its location. **The site must not launch until it reports none.**
+- Photos: put permissioned GU images in `public/images/` and set the matching `image` field.
+
+This content moves into the CMS in Tasks 014–016.
+
 ## Scripts
 
 | Command | Purpose |
@@ -38,6 +49,7 @@ npm run dev                  # http://localhost:2000
 | `npm run typecheck` | TypeScript type check |
 | `npm test` | Unit tests (Vitest) |
 | `npm run test:e2e` | End-to-end tests (Playwright, run after `npm run build`; first time: `npx playwright install chromium`) |
+| `npm run content:check` | Lists unfilled `[slots]` in editable content — must pass before launch |
 | `npm run check` | Lint + typecheck + tests + build — run before every commit |
 
 ## Project structure

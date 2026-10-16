@@ -2,41 +2,44 @@ import { expect, test } from "@playwright/test";
 
 // These run against the production build (see playwright.config.ts).
 test.describe("home page", () => {
-  test("has the reference section structure with a logical heading outline", async ({ page }) => {
+  test("follows the reference section structure with a logical heading outline", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByRole("heading", { level: 1 })).toContainText("Galkayo University");
-    for (const name of ["Welcome to Galkayo University", "Faculties & Programmes", "How to Apply", "News & Events", "Ready to Shape Your Future?"]) {
-      await expect(page.getByRole("heading", { level: 2, name })).toBeVisible();
-    }
+    await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
+    const h2s = await page.getByRole("heading", { level: 2 }).filter({ hasNot: page.locator("footer *") }).allTextContents();
+    const main = h2s.slice(0, 9);
+    expect(main).toEqual([
+      "Welcome to Galkayo University",
+      expect.stringContaining("Faculties"),
+      "How to Apply",
+      expect.stringContaining("Postgraduate Degree"),
+      "Study Online with Galkayo University",
+      "News & Events",
+      "What Our Graduates Say",
+      "Our International Partnerships",
+      "Ready to Shape Your Future",
+    ]);
   });
 
   test("primary call to action leads to admissions", async ({ page }) => {
     await page.goto("/");
-    const cta = page.getByRole("main").getByRole("link", { name: /Apply Now/ }).first();
+    const cta = page.getByRole("main").getByRole("link", { name: /Apply/ }).first();
     await expect(cta).toHaveAttribute("href", /^\/admissions/);
   });
 
-  test("never shows development example content in production", async ({ page }) => {
+  test("does not highlight fill-in slots in production builds", async ({ page }) => {
     await page.goto("/");
-    await expect(page.getByText("Example", { exact: true })).toHaveCount(0);
-    await expect(page.getByText(/Example Faculty|Example news/)).toHaveCount(0);
+    await expect(page.locator("main mark")).toHaveCount(0);
   });
 
-  test("shows no invented statistics", async ({ page }) => {
+  test("testimonial selector switches the quote", async ({ page }) => {
     await page.goto("/");
-    const band = page.getByRole("region", { name: "University at a glance" });
-    await expect(band.getByText("Figure pending verification")).toHaveCount(5);
-  });
-
-  test("hides testimonials and partners until approved content exists", async ({ page }) => {
-    await page.goto("/");
-    await expect(page.getByRole("heading", { name: "What Our Graduates Say" })).toHaveCount(0);
-    await expect(page.getByRole("heading", { name: "Our Partnerships" })).toHaveCount(0);
+    const section = page.getByRole("region", { name: "What Our Graduates Say" }).or(page.locator("section[aria-labelledby=testimonials-title]"));
+    await section.getByRole("button", { name: "Show testimonial 2 of 4" }).click();
+    await expect(section.getByRole("button", { name: "Show testimonial 2 of 4" })).toHaveAttribute("aria-current", "true");
   });
 
   test("all images have alt attributes", async ({ page }) => {
     await page.goto("/");
-    const missing = await page.locator("img:not([alt])").count();
-    expect(missing).toBe(0);
+    expect(await page.locator("img:not([alt])").count()).toBe(0);
   });
 });

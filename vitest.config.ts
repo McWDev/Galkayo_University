@@ -7,6 +7,7 @@ export default defineConfig({
   },
   test: {
     environment: "node",
-    include: ["tests/unit/**/*.test.ts"],
+    // tests/launch holds pre-launch checks, run separately with `npm run content:check`.
+    include: ["tests/unit/**/*.test.ts", "tests/launch/**/*.test.ts"],
   },
 });
